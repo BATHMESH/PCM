@@ -1,0 +1,42 @@
+id: pcm_binary_encoder
+label: PCM (Binary Encoder)
+category: '[PCM]'
+
+templates:
+  imports: from gnuradio.quantizer.quantizer import quantizer
+  make: quantizer(${n_bits}, ${v_max}, ${v_min}, "${dtype}")
+  callbacks:
+    - set_n_bits(${n_bits})
+
+parameters:
+- id: n_bits
+  label: Resolution (Bits)
+  dtype: int
+  default: 8
+
+- id: v_max
+  label: Max Voltage (V_max)
+  dtype: float
+  default: 1.0
+
+- id: v_min
+  label: Min Voltage (V_min)
+  dtype: float
+  default: -1.0
+
+- id: dtype
+  label: Output Type
+  dtype: enum
+  options: ["int", "float"]
+  option_labels: ["Binary Bitstream (Int)", "Quantized Signal (Float)"]
+  default: "int"
+
+inputs:
+- domain: stream
+  dtype: float
+
+outputs:
+- domain: stream
+  dtype: ${ 'int' if dtype == 'int' else 'float' }
+
+file_format: 1
